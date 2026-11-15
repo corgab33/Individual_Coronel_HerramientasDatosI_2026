@@ -47,3 +47,27 @@ goal.weight <- function(matches.df) {
 
     weight
 }
+
+team.performance <- function(team.identifier, matches.df, weight) {
+    # Recibe el nombre de un equipo (team.identifier), un tibble
+    # (matches.df) con los datos de partidos de la competción y "peso
+    # del gol" (weight). Calcula y devuelve el rendimiento del equipo
+    # en cuestión
+
+    summary <- matches.df |>
+        filter(when_any(home.team == team.identifier, away.team == team.identifier)) |>
+        mutate(
+            goal.difference = case_when(
+                home.team == team.identifier ~ home.goals - away.goals,
+                .default = away.goals - home.goals
+            )
+        ) |>
+        summarise(
+            n = n(),
+            total.goal.difference = sum(goal.difference)
+        )
+
+    performance <- (summary$total.goal.difference / summary$n) * weight
+
+    performance
+}
