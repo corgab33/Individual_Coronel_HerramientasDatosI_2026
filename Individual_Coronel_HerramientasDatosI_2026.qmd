@@ -54,3 +54,98 @@ League y Serie A, comentando los resultados.
 Medir la noción de competitividad presente en las competiciones de
 fútbol profesional Bundesliga, La Liga, Ligue 1, Premier League y
 Serie A, entre las temporadas 2021-2022 y 2025-2026.
+
+# Metodología
+
+Para cumplir con el objetivo del presente proyecto, se construirá una
+medida de competitividad mediante tres etapas: una medida de
+rendimiento por equipo, la diferencia ponderada de rendimiento por
+competición, normalización de la diferencia ponderada.
+
+La medida en cuestión se calcula a partir de los datos proveídos por
+Football Data Co UK (2026). El conjunto de datos seleccionado incluye
+los datos de partidos de las competiciones previamente mencionadas,
+disputados entre las temporadas 2021-2022 y 2025-2026. Esto implica al
+menos 1500 partidos por competición.
+
+## Rendimiento por Equipo
+
+Dada una competición $T$, se define $g_{T}$ como la cantidad de
+partidos de $T$ divida entre la cantidad total de goles registrados de
+$T$. Es decir, $g_{T}$ es el recíproco del promedio de goles anotados
+en $T$ por partido. De esta manera $g_{T}$, cuantifica la dificultad
+de anotar un gol en $T$.
+
+Sea $E$ un equipo que participa en $T$. Indexe los partidos disputados
+por $E$ con $(1, ..., P)$. Además, denote por
+
+- $F_{i}$ los goles a favor de $E$ en el $i$-ésimo partido para $i = 1,
+  ..., P$.
+- $C_{i}$ los goles en contra de $E$ en el $i$-ésimo partido para $i = 1,
+  ..., P$.
+  
+El rendimiento de $E$, se define como
+
+$$
+R_{E} := \frac{g_{T}}{P} \sum_{i = 1}^{P} (F_{i} - C_{i})
+$$
+
+Es decir, el rendimiento de $E$ es la diferencia de gol promedio por
+partido disputado, ajustada por $g_{T}$. Esto debido a que una gran
+diferencia de gol por partido indica menos rendimiento positivo en
+competiciones donde se anotan muchos goles por partido.
+
+## Diferencia Neta de Rendimiento
+
+Dada una competición $T$. Calculando el rendimiento de cada equipo
+participante en $T$, se puede construir una tabla de rendimiento para
+$T$ i.e. un listado del rendimiento de cada equipo, ordenado de forma
+decreciente. De esta manera, se pueden inspeccionar las diferencia en
+rendimiento entre equipos consecutivos en la tabla en
+cuestión. 
+
+Fije un parámetro $r \in (0, 1)$. Entonces, $r^{k - 1} \rightarrow 0$
+monotónamente cuando $k \rightarrow \infty$. Indexe los equipos de la
+tabla de rendimiento de $T$ con $\{E_{i}\}_{i = 1}^{N}$. Se define la diferencia
+neta de rendimiento de $T$ como
+
+$$
+\Delta_{T} := \sum_{i = 1}^{N - 1} (R_{E_{i}} - R_{E_{i + 1}}) r^{i - 1}
+$$
+
+Es decir, $\Delta_{T}$ es la suma de las diferencias de rendimiento
+consecutivas ponderadas por potencias de $r$. De esta manera, las
+diferencias tienen mayor peso en las primeras posiciones de la
+tabla. Entre más grande sea $\Delta_{T}$, menos competitiva es $T$.
+
+Ahora, resulta razonable imponer la restricción de que el peso para la
+diferencia en entre los equipos de la mitad de la tabla sea
+$\frac{1}{2}$. Se observa que las tablas de rendimiento tienen en
+promedio cerca de 26 equipos. Por ende,
+
+$$
+r^{\frac{26}{2} - 1} = \frac{1}{2} \iff r \approx 0.9439
+$$
+
+Este es el valor de $r$ que se utilizará para el cálculo de
+diferencias netas de rendimiento.
+
+## Normalización
+
+Con el fin de facilitar las comparaciones entre distintas
+competiciones. Se escoge una competición de referencia y se saturan
+las diferencias netas de rendimiento con respecto a esta competición
+de referencia. En este caso, se escoge la mediana de las diferencias
+netas de rendimiento como referencia.
+
+Entre más alta sea esta medida saturada, menos competitiva es una
+competición. Por lo tanto, se considera el complemento de la
+saturación. Dada una competición $T$, su medida de competitividad se
+define como
+
+$$
+\gamma_{T} := 1 - \frac{\Delta_{T}}{\Delta{T} + \Delta_{0}}
+$$
+
+donde $\Delta_{0}$ es la mediana de las diferencias netas de
+rendimiento a lo largo de todas las competiciones.
