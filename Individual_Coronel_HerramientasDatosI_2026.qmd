@@ -255,6 +255,31 @@ equipos (Barcelona y Real Madrid), lo cual indica una mayor
 competitividad. Además, no hay ningún equipo con rendimiento negativo
 entre los primeros ocho equipos.
 
+Ahora, se calculan las diferencias netas de rendimiento para cada una
+de las competiciones.
+
+``` {r}
+#| label: tbl-summary5
+
+tibble(league = names(leagues.data)) |>
+    mutate(league.performance.difference = map_dbl(leagues.data, \(x) round(net.performance.difference(x), 3))) |>
+    arrange(desc(league.performance.difference)) |>
+    kable(col.names = c("Competición", "Diferencia Neta de Rendimiento"))
+
+```
+
+De esta manera, la mediana de las diferencias netas de rendimiento
+corresponde a la de la Premier League i.e. la Premier League es la
+liga de referencia para calcular la medida de competitividad.
+
+``` {r}
+
+median.performance.difference <- leagues.data |>
+    map_dbl(net.performance.difference) |>
+    median()
+
+```
+
 # Anexos
 
 ## Anexo 1
