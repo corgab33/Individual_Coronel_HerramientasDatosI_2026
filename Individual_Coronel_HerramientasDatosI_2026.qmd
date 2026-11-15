@@ -199,3 +199,19 @@ tibble(league = names(leagues.data)) |>
 Se observa que la Bundesliga y la Ligue 1 presentan una cantidad
 significativa de menos partidos, a pesar de que para toda competición
 se incluyen las mismas cinco temporadas.
+
+Luego, se puede calcular los goles promedio por partido en cada
+competición.
+
+``` {r}
+#| label: tbl-summary2
+
+tibble(league = names(leagues.data)) |>
+    mutate(average.goals = map_dbl(leagues.data, \(x) round(1/goal.weight(x), 2))) |>
+    kable(col.names = c("Competición", "Goles Promedio por Partido"))
+
+```
+
+Se puede ver que se anotan más goles en promedio en la Bundesliga, en
+comparación a las demás competiciones. En otras palabras, los goles
+_valen_ menos en la Bundesliga.
