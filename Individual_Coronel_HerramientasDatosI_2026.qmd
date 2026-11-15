@@ -344,3 +344,28 @@ performance.comparison.plot
 ggsave("info/figuras/performance-comparison.pdf", plot = performance.comparison.plot)
 
 ```
+
+## Anexo 2
+
+``` {r}
+#| label: fig-extra2
+
+ratings.plot <- rating.table |>
+    ggplot(aes(x = rating - 0.5, y = reorder(league, rating), fill = rating > 0.5)) +
+    geom_col(width = 0.5) +
+    geom_text(aes(label = round(rating, 2),
+                  hjust = ifelse(rating >= 0.5, -0.1, 1.1))) +
+    geom_vline(xintercept = 0) +
+    scale_x_continuous(labels = function(x) x + 0.5,
+                       expand = expansion(mult = 0.15)) +
+    scale_fill_manual(values = c("TRUE" = "#2c7fb8", "FALSE" = "#d95f0e")) +
+    labs(title = "La Bundesliga es la liga menos competitiva",
+         x = "Competitividad", y = "Competición") +
+    theme_minimal() +
+    theme(legend.position = "none")
+
+ratings.plot
+
+ggsave("info/figuras/ratings.pdf", plot = ratings.plot)
+
+```
