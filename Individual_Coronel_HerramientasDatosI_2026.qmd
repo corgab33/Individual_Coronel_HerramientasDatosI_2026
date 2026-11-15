@@ -254,3 +254,47 @@ Por otro lado, La Liga exhibe una gran paridad entre los dos primeros
 equipos (Barcelona y Real Madrid), lo cual indica una mayor
 competitividad. Además, no hay ningún equipo con rendimiento negativo
 entre los primeros ocho equipos.
+
+# Anexos
+
+## Anexo 1
+
+``` {r}
+#| label: fig-extra1
+
+amount.teams <- 8
+
+bundesliga.performance.table <- performance.table(leagues.data[["bundesliga"]]) |>
+    mutate(performance = round(performance, 3)) |>
+    head(amount.teams)
+
+laliga.performance.table <- performance.table(leagues.data[["la-liga"]]) |>
+    mutate(performance = round(performance, 3)) |>
+    head(amount.teams)
+
+performance.comparison.plot <- tibble(
+    i = seq_len(amount.teams),
+    Bundesliga = bundesliga.performance.table$performance,
+    LaLiga = laliga.performance.table$performance
+) |>
+    pivot_longer(
+        cols = c(Bundesliga, LaLiga),
+        names_to = "league",
+        values_to = "performance"
+    ) |>
+    ggplot(aes(x = factor(i), y = performance, fill = league)) +
+    geom_col(position = position_dodge(width = 0.8), width = 0.7) +
+    geom_hline(yintercept = 0) +
+    labs(
+        title = "La Bundesliga exhibe mayores diferencias de rendimiento",
+        x = "Posición",
+        y = "Rendimiento",
+        fill = NULL
+    ) +
+    theme_minimal()
+
+performance.comparison.plot
+
+ggsave("info/figuras/performance-comparison.pdf", plot = performance.comparison.plot)
+
+```
