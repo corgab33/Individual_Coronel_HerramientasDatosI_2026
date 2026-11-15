@@ -117,3 +117,16 @@ net.performance.difference <- function(matches.df) {
 
     summary$total.performance.difference
 }
+
+league.rating <- function(matches.df, saturation.parameter) {
+    # Recibe un tibble (matches.df) con datos de partidos de una
+    # competición y un parámetro de saturación
+    # (saturation.parameter). A partir de la diferencia neta de
+    # rendimiento, calcula la medida de competitividad
+
+    league.performance.difference <- net.performance.difference(matches.df)
+    saturation <- league.performance.difference / (league.performance.difference + saturation.parameter)
+    complement <- 1 - saturation
+
+    complement
+}
