@@ -280,6 +280,27 @@ median.performance.difference <- leagues.data |>
 
 ```
 
+Dicho esto, se calcula la medida de competitividad para cada liga
+(Véase el Anexo 2 para una visualización gráfica).
+
+``` {r}
+#| label: tbl-summary6
+
+rating.table <- tibble(league = names(leagues.data)) |>
+    mutate(rating = map_dbl(leagues.data, \(x) round(league.rating(x, median.performance.difference), 3))) |>
+    arrange(desc(rating))
+
+rating.table |>
+    kable(col.names = c("Competición", "Competitividad"))
+
+```
+
+Mediante esto, se observa que la Serie A y La Liga son las ligas más
+competitivas con niveles competitividad muy similares. También, la
+Bundesliga es por una diferencia significativa, la liga menos
+competitiva. Finalmente, la Ligue 1 y la Premier League (i.e. liga de
+referencia) tienen niveles de competitividad muy cercanos.
+
 # Anexos
 
 ## Anexo 1
