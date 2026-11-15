@@ -149,3 +149,53 @@ $$
 
 donde $\Delta_{0}$ es la mediana de las diferencias netas de
 rendimiento a lo largo de todas las competiciones.
+
+# Resultados
+
+``` {r}
+
+library(readr)
+library(stringr)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(ggplot2)
+library(knitr)
+
+source("cod/funciones.R")
+
+```
+
+## Análisis Exploratorio de Datos
+
+Se consideran los datos en formato CSV obtenidos en Football Data Co
+UK (2026). Estos datos están estructurados en un archivo distinto por
+cada temporada y competición, conteniendo una observación por partido
+disputado. Por esta razón, por cada competición, se concatenan todas
+las tablas de datos de las temporadas de tal competición. Se observan
+las siguientes cantidades de partidos para cada competición.
+
+``` {r}
+
+leagues.data <- list(
+    "bundesliga" = read.matches.df("bundesliga"),
+    "la-liga" = read.matches.df("la-liga"),
+    "ligue-1" = read.matches.df("ligue-1"),
+    "premier-league" = read.matches.df("premier-league"),
+    "serie-a" = read.matches.df("serie-a")
+)
+
+```
+
+``` {r}
+#| label: tbl-summary1
+
+tibble(league = names(leagues.data)) |>
+    mutate(observations = map_int(leagues.data, nrow)) |>
+    kable(col.names = c("Competición", "Observaciones"))
+
+```
+
+Se observa que la Bundesliga y la Ligue 1 presentan una cantidad
+significativa de menos partidos, a pesar de que para toda competición
+se incluyen las mismas cinco temporadas.
