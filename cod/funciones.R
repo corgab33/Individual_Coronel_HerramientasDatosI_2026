@@ -32,3 +32,18 @@ read.matches.df <- function(league.identifier) {
 
     matches.df
 }
+
+goal.weight <- function(matches.df) {
+    # Recibe un tibble (matches.df) con los datos de partidos de una
+    # competición, calcula y devuelve el "peso del gol" en la
+    # competición
+
+    summary <- matches.df |>
+        mutate(total.goals = home.goals + away.goals) |>
+        summarise(n = n(), league.goals = sum(total.goals))
+
+    weight <- summary$n / summary$league.goals
+    stopifnot(is.finite(weight))
+
+    weight
+}
