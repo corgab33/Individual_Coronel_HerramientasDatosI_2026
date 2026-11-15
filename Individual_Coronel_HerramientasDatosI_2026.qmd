@@ -1,0 +1,50 @@
+---
+title: Análisis de Competitividad de las cinco Principales Ligas del Fútbol Europeo
+author: José Gabriel Coronel Cascante
+
+format:
+  typst:
+    papersize: a4
+    margin:
+      x: 1.8cm
+      y: 1.6cm
+    fontsize: 12pt
+    toc: false
+    number-sections: false
+    fig-format: png
+    fig-dpi: 200
+
+execute:
+  echo: false
+  warning: false
+  message: false
+
+editor: 
+  markdown: 
+    wrap: 72
+
+crossref:
+  fig-title: "Figura"
+  tbl-title: "Tabla"
+---
+
+# Introducción
+
+Las cinco principales ligas del fútbol europeo son eventos consumidos
+internacionalmente, con gran relevancia comercial (Saleh, 2025). En
+todas las ediciones se determina un ganador así como los equipos
+clasificados a las distintas competiciones internacionales, y los
+equipos que descienden a la segunda división. Aunque estas piezas de
+información son las más llamativas, hay una métrica que carece de
+atención: la competitividad.
+
+Por competitividad, se entiende la paridad en el rendimiento de los
+equipos de la competición. Este aspecto puede ser de gran influencia
+en el éxito comercial de una competición (Cunningham, 2022). De esta
+manera, el presente proyecto pretende medir la competitividad en las
+cinco principales ligas del fútbol europeo.
+
+A continuación, se describe la construcción de una medida para la
+competitividad en una liga de fútbol. Posteriormente, esta medida se
+aplica a las competiciones Bundesliga, La Liga, Ligue 1, Premier
+League y Serie A, comentando los resultados.
