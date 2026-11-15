@@ -71,3 +71,23 @@ team.performance <- function(team.identifier, matches.df, weight) {
 
     performance
 }
+
+performance.table <- function(matches.df) {
+    # Recibe un tibble (matches.df) con los datos de los partidos de
+    # una competción, calcula el rendimiento de cada equipo, para
+    # construir y devolver una tabla de rendimiento
+
+    weight <- goal.weight(matches.df)
+
+    team.performance.application <- function(team.identifier) {
+        team.performance(team.identifier, matches.df, weight)
+    }
+
+    table <- matches.df |>
+        summarise(.by = "home.team") |>
+        rename(team = home.team) |>
+        mutate(performance = map_dbl(team, team.performance.application)) |>
+        arrange(desc(performance))
+
+    table
+}
