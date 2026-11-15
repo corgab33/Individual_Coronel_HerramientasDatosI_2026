@@ -91,3 +91,29 @@ performance.table <- function(matches.df) {
 
     table
 }
+
+net.performance.difference <- function(matches.df) {
+    # Recibe un tibble (matches.df) con datos de partidos de una
+    # competición. Calcula y devuelve la diferencia ponderada de
+    # rendimiento de la competición
+
+    position.weight.factor <- (1/2)^(1/12)
+    table <- performance.table(matches.df)
+
+    position.weight.application <- function(performance.difference, position) {
+        position.weight <- position.weight.factor^(position - 1)
+
+        performance.difference * position.weight
+    }
+
+    summary <- table |>
+        mutate(
+            performance.shift = lead(performance),
+            performance.difference = performance - performance.shift
+        ) |>
+        drop_na(performance.difference) |>
+        mutate(weighted.performance.difference = imap_dbl(performance.difference, position.weight.application)) |>
+        summarise(total.performance.difference = sum(weighted.performance.difference))
+
+    summary$total.performance.difference
+}
