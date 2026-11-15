@@ -215,3 +215,42 @@ tibble(league = names(leagues.data)) |>
 Se puede ver que se anotan más goles en promedio en la Bundesliga, en
 comparación a las demás competiciones. En otras palabras, los goles
 _valen_ menos en la Bundesliga.
+
+## Resultados de la Metodología
+
+Primero, se calcula el rendimiento de cada equipo. Estos resultados se
+pueden resumir en tablas de rendimiento para cada competición. Por
+temas de brevedad, solamente se destacan los primeros ocho equipos de
+dos competiciones: Bundesliga y La Liga (Véase el Anexo 1 para una
+comparación lado a lado de estas dos tablas de rendimiento).
+
+``` {r}
+#| label: tbl-summary3
+
+performance.table(leagues.data[["bundesliga"]]) |>
+    mutate(performance = round(performance, 3)) |>
+    head(8) |>
+    kable(col.names = c("Equipo", "Rendimiento"))
+
+```
+
+En la Bundesliga se presenta una gran diferencia entre el primer
+equipo (Bayern Munich) y el segundo equipo (Leverkusen). Esta
+diferencia es una señal de una menor competitividad. Además, se
+observan dos equipos (Freiburg y Mainz) con rendimiento negativo entre
+los primeros ocho equipos.
+
+``` {r}
+#| label: tbl-summary4
+
+performance.table(leagues.data[["la-liga"]]) |>
+    mutate(performance = round(performance, 3)) |>
+    head(8) |>
+    kable(col.names = c("Equipo", "Rendimiento"))
+
+```
+
+Por otro lado, La Liga exhibe una gran paridad entre los dos primeros
+equipos (Barcelona y Real Madrid), lo cual indica una mayor
+competitividad. Además, no hay ningún equipo con rendimiento negativo
+entre los primeros ocho equipos.
